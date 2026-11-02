@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Кафе «Грамотей» — орфографическая витрина</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --tomato:#ff5a4e; --mustard:#ffc23d; --mint:#3fd3a6; --cream:#fff6e6;
+    --choco:#4a2c2a; --berry:#ff4f9a; --sky:#5ab8ff; --lime:#b6e94b;
+    --dark:#2a1b1a; --glass:rgba(255,255,255,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    font-family:'Rubik',system-ui,sans-serif;color:var(--choco);
+    background:
+      radial-gradient(circle at 15% 20%, rgba(255,194,61,.35) 0 18%, transparent 40%),
+      radial-gradient(circle at 85% 10%, rgba(255,79,154,.25) 0 15%, transparent 40%),
+      radial-gradient(circle at 70% 90%, rgba(63,211,166,.25) 0 15%, transparent 45%),
+      linear-gradient(180deg,#fff1dc 0%,#ffe3c2 100%);
+    overflow-x:hidden;padding-bottom:120px;
+  }
+
+  /* ===== Тент ===== */
+  .awning{position:relative;height:70px;
+    background:repeating-linear-gradient(90deg,var(--tomato) 0 50px,#fff 50px 100px);
+    box-shadow:0 8px 18px rgba(0,0,0,.18);z-index:5}
+  .awning::after{content:"";position:absolute;left:0;right:0;bottom:-24px;height:25px;
+    background:
+      radial-gradient(circle at 25px 0,var(--tomato) 24px,transparent 25px) 0 0/100px 25px repeat-x,
+      radial-gradient(circle at 75px 0,#fff 24px,transparent 25px) 0 0/100px 25px repeat-x;
+    filter:drop-shadow(0 6px 4px rgba(0,0,0,.12));animation:sway 4s ease-in-out infinite;transform-origin:top}
+  @keyframes sway{50%{transform:scaleY(1.12)}}
+
+  /* ===== Шапка ===== */
+  header{max-width:1250px;margin:40px auto 10px;padding:0 18px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+  .sign{font-family:'Comfortaa','Rubik',sans-serif,cursive;font-weight:700;font-size:clamp(26px,4vw,46px);
+    color:#fff;padding:10px 26px;border-radius:20px;background:var(--dark);
+    text-shadow:0 0 6px #fff,0 0 14px var(--berry),0 0 28px var(--berry),0 0 46px var(--tomato);
+    box-shadow:0 0 0 4px var(--mustard),0 0 30px rgba(255,79,154,.55),inset 0 0 22px rgba(255,79,154,.35);
+    animation:neon 3.5s infinite}
+  .sign small{display:block;font-size:.38em;letter-spacing:3px;color:var(--mustard);
+    text-shadow:0 0 8px var(--mustard)}
+  @keyframes neon{0%,18%,22%,62%,64%,100%{opacity:1}20%,63%{opacity:.55}}
+  .hud{display:flex;gap:12px;flex-wrap:wrap}
+  .chip{background:#fff;border-radius:18px;padding:10px 18px;font-weight:800;font-size:20px;
+    display:flex;align-items:center;gap:8px;box-shadow:0 6px 0 rgba(74,44,42,.15),0 10px 20px rgba(0,0,0,.08);position:relative}
+  .chip .ico{font-size:26px;filter:drop-shadow(0 0 6px rgba(255,194,61,.9))}
+  .chip.money{background:linear-gradient(135deg,#fff7c9,#ffd86b)}
+  .chip.money.hit{animation:hit .5s}
+  @keyframes hit{20%{transform:translateX(-6px) rotate(-3deg);background:#ff9d94}40%{transform:translateX(6px) rotate(3deg)}60%{transform:translateX(-4px)}}
+  .chip.fire{background:linear-gradient(135deg,#ffe0c9,#ffb37a)}
+  .chip.fire.hot .ico{animation:flame .5s ease-in-out infinite alternate}
+  .chip.fire.hot{box-shadow:0 0 0 3px #ff8a00,0 0 25px #ff6a00,0 6px 0 rgba(74,44,42,.15)}
+  @keyframes flame{from{transform:scale(1) rotate(-8deg)}to{transform:scale(1.35) rotate(8deg);filter:drop-shadow(0 0 12px #ff6a00)}}
+  .chip.dict{background:linear-gradient(135deg,#e2f7ff,#9fdcff)}
+  .btn-finish{border:none;cursor:pointer;font:800 17px 'Rubik',sans-serif;color:#fff;padding:12px 20px;border-radius:18px;
+    background:linear-gradient(135deg,var(--mint),#20a982);box-shadow:0 6px 0 #17805f;transition:.15s}
+  .btn-finish:hover{transform:translateY(-2px);filter:brightness(1.08)}
+  .btn-finish:active{transform:translateY(4px);box-shadow:0 2px 0 #17805f}
+
+  .intro{max-width:1250px;margin:6px auto 0;padding:0 18px;font-size:16px;opacity:.85}
+  .progress{max-width:1250px;margin:10px auto 0;padding:0 18px}
+  .bar{height:14px;border-radius:10px;background:rgba(74,44,42,.12);overflow:hidden}
+  .bar i{display:block;height:100%;width:0;border-radius:10px;
+    background:repeating-linear-gradient(45deg,var(--mustard) 0 14px,var(--tomato) 14px 28px);
+    background-size:40px 40px;animation:stripes 1s linear infinite;transition:width .6s}
+  @keyframes stripes{to{background-position:40px 0}}
+
+  /* ===== Витрина ===== */
+  .showcase{max-width:1250px;margin:22px auto;padding:26px 22px 30px;border-radius:30px;position:relative;
+    background:linear-gradient(160deg,rgba(255,255,255,.75),rgba(255,255,255,.35));
+    border:6px solid #fff;box-shadow:0 0 0 6px var(--choco),0 25px 50px rgba(74,44,42,.3),inset 0 0 60px rgba(255,255,255,.7);
+    overflow:hidden}
+  .showcase::before{content:"";position:absolute;top:-50%;left:-30%;width:30%;height:200%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);
+    transform:rotate(20deg);animation:shine 7s ease-in-out infinite;pointer-events:none;z-index:3}
+  @keyframes shine{0%{left:-40%}60%,100%{left:130%}}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:20px 18px;position:relative;z-index:1}
+  .card{position:relative;cursor:pointer;border-radius:24px;padding:16px 10px 12px;text-align:center;
+    background:linear-gradient(160deg,hsl(var(--h) 100% 92%),hsl(var(--h) 90% 80%));
+    box-shadow:0 8px 0 hsl(var(--h) 60% 62%),0 14px 22px rgba(0,0,0,.12);
+    transition:transform .25s cubic-bezier(.3,1.6,.5,1),box-shadow .25s,filter .3s;
+    animation:pop .6s backwards;animation-delay:calc(var(--i) * 35ms)}
+  @keyframes pop{from{transform:scale(.3) translateY(40px);opacity:0}}
+  .card::after{content:"";position:absolute;left:8%;right:8%;bottom:-16px;height:8px;border-radius:50%;
+    background:rgba(74,44,42,.18);filter:blur(3px)}
+  .card:hover{transform:translateY(-8px) rotate(-1.5deg) scale(1.04);
+    box-shadow:0 8px 0 hsl(var(--h) 60% 62%),0 0 0 4px #fff,0 0 30px hsl(var(--h) 100% 60%),0 22px 30px rgba(0,0,0,.18)}
+  .emoji{font-size:62px;line-height:1.1;display:inline-block;
+    filter:drop-shadow(0 0 10px hsl(var(--h) 100% 65%)) drop-shadow(0 4px 2px rgba(0,0,0,.18));
+    animation:float 3s ease-in-out infinite,glow 2.4s ease-in-out infinite alternate;animation-delay:calc(var(--i) * -170ms)}
+  @keyframes float{50%{transform:translateY(-8px) rotate(4deg)}}
+  @keyframes glow{to{filter:drop-shadow(0 0 22px hsl(var(--h) 100% 60%)) drop-shadow(0 4px 2px rgba(0,0,0,.18))}}
+  .card:hover .emoji{animation:wiggle .5s ease-in-out infinite,glow 1s infinite alternate}
+  @keyframes wiggle{25%{transform:rotate(-12deg) scale(1.15)}75%{transform:rotate(12deg) scale(1.15)}}
+  .name{font-weight:800;font-size:15px;margin-top:6px}
+  .tag{display:inline-block;margin-top:6px;font-size:12px;font-weight:800;color:#fff;padding:3px 10px;border-radius:10px;
+    background:hsl(var(--h) 70% 45%)}
+  .steam{position:absolute;top:6px;left:50%;width:8px;height:20px;border-radius:50%;background:rgba(255,255,255,.9);
+    filter:blur(3px);animation:steam 2.4s ease-out infinite;opacity:0}
+  .steam:nth-child(2){margin-left:-16px;animation-delay:.8s}
+  .steam:nth-child(3){margin-left:14px;animation-delay:1.6s}
+  @keyframes steam{0%{transform:translateY(18px) scale(.6);opacity:0}30%{opacity:.85}100%{transform:translateY(-22px) scale(1.4);opacity:0}}
+  .card.done{cursor:default;filter:saturate(.35) brightness(1.05);transform:none!important}
+  .card.done .emoji{animation:none;opacity:.55}
+  .card.done .steam{display:none}
+  .stamp{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+  .stamp span{font:800 18px 'Rubik',sans-serif;padding:6px 12px;border:4px solid;border-radius:12px;transform:rotate(-14deg);
+    background:rgba(255,255,255,.85);animation:stampIn .45s cubic-bezier(.3,1.8,.5,1)}
+  .stamp.ok span{color:#14a073;border-color:#14a073}
+  .stamp.bad span{color:var(--tomato);border-color:var(--tomato)}
+  @keyframes stampIn{from{transform:rotate(-14deg) scale(3);opacity:0}}
+
+  /* ===== Поднос ===== */
+  .tray{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:12px 18px;
+    background:linear-gradient(180deg,#8b5a3c,#6b3f28);border-top:6px solid #b07a52;
+    box-shadow:0 -10px 30px rgba(0,0,0,.25);display:flex;align-items:center;gap:14px}
+  .tray b{color:#ffe6b3;font-size:16px;white-space:nowrap}
+  .tray-items{display:flex;gap:4px;flex-wrap:wrap;font-size:32px;min-height:44px;align-items:center}
+  .tray-items span{animation:land .5s cubic-bezier(.3,1.8,.5,1);filter:drop-shadow(0 0 6px rgba(255,220,120,.9))}
+  @keyframes land{from{transform:translateY(-30px) scale(2)}}
+  .tray-empty{color:#e7c9a6;font-size:14px;font-style:italic}
+
+  /* ===== Модалка ===== */
+  .overlay{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:16px;
+    background:rgba(42,27,26,.55);backdrop-filter:blur(6px)}
+  .overlay.show{display:flex;animation:fade .25s}
+  @keyframes fade{from{opacity:0}}
+  .modal{width:min(560px,100%);border-radius:30px;padding:26px 24px 24px;text-align:center;position:relative;
+    background:linear-gradient(180deg,#fffaf0,#ffeccc);border:5px solid #fff;
+    box-shadow:0 0 0 5px var(--choco),0 30px 60px rgba(0,0,0,.35);animation:modalIn .45s cubic-bezier(.3,1.5,.5,1)}
+  @keyframes modalIn{from{transform:scale(.5) rotate(-6deg);opacity:0}}
+  .modal.shake{animation:shake .5s}
+  @keyframes shake{20%,60%{transform:translateX(-12px)}40%,80%{transform:translateX(12px)}}
+  .close{position:absolute;top:10px;right:14px;border:none;background:none;font-size:26px;cursor:pointer;color:var(--choco)}
+  .m-emoji{font-size:96px;display:inline-block;animation:float 2.4s ease-in-out infinite;
+    filter:drop-shadow(0 0 20px var(--mustard))}
+  .m-title{font:700 22px 'Comfortaa','Rubik',sans-serif;margin:4px 0 14px}
+  .word{font-size:clamp(24px,5vw,36px);font-weight:800;letter-spacing:1px;margin:10px 0 18px;line-height:1.5}
+  .slot{display:inline-block;min-width:1em;padding:0 6px;margin:0 2px;border-radius:10px;color:var(--tomato);
+    background:#fff;border:3px dashed var(--tomato);animation:blink 1s infinite}
+  @keyframes blink{50%{border-color:var(--mustard);transform:translateY(-3px)}}
+  .word .good{color:#14a073;background:#c9f6e5;border-radius:8px;padding:0 6px;animation:bounce .6s}
+  .word .wrong{color:var(--tomato);text-decoration:line-through}
+  @keyframes bounce{40%{transform:scale(1.6)}}
+  .answer-row{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
+  #letter{width:84px;height:84px;font:800 46px 'Rubik',sans-serif;text-align:center;text-transform:uppercase;color:var(--choco);
+    border-radius:20px;border:4px solid var(--mustard);background:#fff;outline:none;transition:.2s}
+  #letter:focus{border-color:var(--tomato);box-shadow:0 0 0 6px rgba(255,90,78,.25),0 0 25px rgba(255,90,78,.4)}
+  .keys{display:flex;gap:6px;justify-content:center;margin:12px 0 4px;flex-wrap:wrap}
+  .keys button{width:46px;height:46px;border:none;border-radius:12px;font:800 22px 'Rubik',sans-serif;cursor:pointer;color:var(--choco);
+    background:#fff;box-shadow:0 4px 0 #e2c9a3;transition:.12s}
+  .keys button:hover{background:var(--mustard)}
+  .keys button:active{transform:translateY(3px);box-shadow:0 1px 0 #e2c9a3}
+  .hint{font-size:13px;opacity:.65}
+  .bigbtn{border:none;cursor:pointer;font:800 20px 'Rubik',sans-serif;color:#fff;padding:16px 26px;border-radius:20px;transition:.15s;
+    background:linear-gradient(135deg,var(--tomato),#e63b2e);box-shadow:0 6px 0 #b42a20}
+  .bigbtn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+  .bigbtn:active{transform:translateY(4px);box-shadow:0 2px 0 #b42a20}
+  .bigbtn.green{background:linear-gradient(135deg,var(--mint),#20a982);box-shadow:0 6px 0 #17805f}
+  .bigbtn.blue{background:linear-gradient(135deg,var(--sky),#2f8ee0);box-shadow:0 6px 0 #1f6bb0}
+  .bigbtn.blue.added{background:linear-gradient(135deg,#9aa7b3,#7a8794);box-shadow:0 6px 0 #5e6874}
+  .result{min-height:0;font-weight:800;font-size:22px;margin-top:14px}
+  .result.ok{color:#14a073}
+  .result.bad{color:var(--tomato)}
+  .actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+
+  /* ===== Эффекты ===== */
+  .confetti{position:fixed;top:0;width:10px;height:16px;z-index:100;pointer-events:none;border-radius:3px}
+  .float-text{position:fixed;z-index:110;pointer-events:none;font:800 34px 'Rubik',sans-serif;
+    text-shadow:0 3px 0 #fff,0 0 20px currentColor;animation:floatUp 1.3s ease-out forwards}
+  @keyframes floatUp{0%{transform:translate(-50%,0) scale(.5);opacity:0}20%{transform:translate(-50%,-20px) scale(1.3);opacity:1}100%{transform:translate(-50%,-120px) scale(1);opacity:0}}
+  .toast{position:fixed;left:50%;top:22%;z-index:120;pointer-events:none;font:800 clamp(28px,6vw,54px) 'Comfortaa','Rubik',sans-serif;
+    color:#fff;padding:14px 30px;border-radius:26px;white-space:nowrap;
+    background:linear-gradient(135deg,#ff8a00,#ff2d55);box-shadow:0 0 40px #ff6a00;
+    animation:toast 1.8s cubic-bezier(.3,1.5,.5,1) forwards}
+  @keyframes toast{0%{transform:translate(-50%,0) scale(0) rotate(-10deg)}20%{transform:translate(-50%,0) scale(1.1) rotate(3deg)}30%,80%{transform:translate(-50%,0) scale(1) rotate(0)}100%{transform:translate(-50%,-60px) scale(.8);opacity:0}}
+  .ember{position:fixed;z-index:105;pointer-events:none;font-size:22px;animation:ember 1.2s ease-out forwards}
+  @keyframes ember{to{transform:translate(var(--dx),var(--dy)) scale(.3) rotate(200deg);opacity:0}}
+
+  /* ===== Финал ===== */
+  .final{position:fixed;inset:0;z-index:200;overflow:auto;display:none;padding:30px 16px 40px;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(255,194,61,.45), transparent 40%),
+      radial-gradient(circle at 90% 30%, rgba(255,79,154,.3), transparent 40%),
+      linear-gradient(180deg,#fff4e0,#ffe1c4)}
+  .final.show{display:block;animation:fade .5s}
+  .receipt{max-width:900px;margin:0 auto;background:#fff;border-radius:26px;padding:28px 24px;
+    box-shadow:0 0 0 5px var(--choco),0 30px 60px rgba(0,0,0,.25);animation:modalIn .6s cubic-bezier(.3,1.4,.5,1)}
+  .receipt h1{font:700 clamp(26px,4vw,40px) 'Comfortaa','Rubik',sans-serif;text-align:center}
+  .rank{text-align:center;font-size:20px;font-weight:800;margin:8px 0 18px;color:var(--tomato)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+  .stat{border-radius:20px;padding:14px;text-align:center;font-weight:800}
+  .stat div{font-size:34px}
+  .stat small{font-size:14px;opacity:.8}
+  .reminder{font:800 clamp(18px,2.6vw,24px) 'Rubik',sans-serif;text-align:center;color:#fff;padding:16px;border-radius:20px;margin:16px 0;
+    background:linear-gradient(135deg,var(--berry),var(--tomato));animation:pulse 1.6s infinite;box-shadow:0 0 0 0 rgba(255,79,154,.6)}
+  @keyframes pulse{50%{transform:scale(1.02);box-shadow:0 0 0 12px rgba(255,79,154,0)}}
+  .mistakes{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+  .mist{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:16px;background:#fff3ef;border:2px solid #ffd2cb;
+    animation:pop .5s backwards;animation-delay:calc(var(--i) * 60ms)}
+  .mist .e{font-size:34px}
+  .mist .w{font-size:20px;font-weight:800}
+  .mist .w b{color:#14a073;background:#c9f6e5;border-radius:6px;padding:0 4px}
+  .mist .y{font-size:13px;opacity:.75}
+  .mist .star{margin-left:auto;font-size:20px}
+  .perfect{text-align:center;font-size:22px;font-weight:800;padding:20px;color:#14a073}
+  .earned{text-align:center;font-size:30px;margin:10px 0 4px;line-height:1.4}
+  h2{font:700 22px 'Comfortaa','Rubik',sans-serif;margin:18px 0 10px}
+
+  @media (max-width:600px){
+    .grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:14px}
+    .emoji{font-size:46px}.name{font-size:13px}
+    .chip{font-size:16px;padding:8px 12px}
+  }
+</style>
+</head>
+<body>
+
+<div class="awning"></div>
+
+<header>
+  <div class="sign">Кафе «Грамотей»<small>★ ВКУСНАЯ ОРФОГРАФИЯ ★</small></div>
+  <div class="hud">
+    <div class="chip money" id="moneyChip"><span class="ico">💰</span><span id="money">300</span>$</div>
+    <div class="chip fire" id="fireChip"><span class="ico">🔥</span>серия <span id="streak">0</span></div>
+    <div class="chip dict"><span class="ico">📒</span><span id="dictCount">0</span></div>
+    <button class="btn-finish" id="finishBtn">🧾 Счёт, пожалуйста!</button>
+  </div>
+</header>
+
+<p class="intro">Выбирай блюдо на витрине и вставляй пропущенную букву. Верно — блюдо твоё, деньги целы. Ошибка — минус 10 $ 💸</p>
+<div class="progress"><div class="bar"><i id="bar"></i></div></div>
+
+<main class="showcase"><div class="grid" id="grid"></div></main>
+
+<div class="tray"><b>🍽 Твой поднос:</b><div class="tray-items" id="tray"><span class="tray-empty">пока пусто… выбери что-нибудь вкусное!</span></div></div>
+
+<!-- Модалка вопроса -->
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal">
+    <button class="close" id="closeBtn" title="Закрыть">✕</button>
+    <div class="m-emoji" id="mEmoji">🍔</div>
+    <div class="m-title" id="mTitle">Бургер</div>
+    <div class="word" id="mWord"></div>
+    <div id="inputZone">
+      <div class="answer-row">
+        <input id="letter" maxlength="1" autocomplete="off" autocapitalize="characters" spellcheck="false">
+        <button class="bigbtn" id="checkBtn">Проверить ✓</button>
+      </div>
+      <div class="keys">
+        <button data-k="Ъ">Ъ</button><button data-k="Ь">Ь</button><button data-k="Ё">Ё</button>
+        <button data-k="Ы">Ы</button><button data-k="Е">Е</button><button data-k="И">И</button>
+        <button data-k="А">А</button><button data-k="О">О</button>
+      </div>
+      <div class="hint">Можно печатать с клавиатуры или нажать на букву. Enter — проверить.</div>
+    </div>
+    <div class="result" id="result"></div>
+    <div class="actions" id="actions"></div>
+  </div>
+</div>
+
+<!-- Финальный экран -->
+<div class="final" id="final"><div class="receipt" id="receipt"></div></div>
+
+<script>
+const WORDS = [
+  ["выч_тка рукописи","И"],
+  ["пр_клонить колено","Е"],
+  ["ч_столюбивый","Е"],
+  ["под_ячий","Ь"],
+  ["с_змала","Ы"],
+  ["пр_емник традиций","Е"],
+  ["выт_чка на платье","А"],
+  ["пр_пираться с соседом","Е"],
+  ["фельд_егерь","Ъ"],
+  ["разр_женный воздух","Е"],
+  ["пр_станище","И"],
+  ["пан_японизм","Ъ"],
+  ["ч_боты","Ё"],
+  ["ад_ютант","Ъ"],
+  ["пр_образ","О"],
+  ["с_митировать","Ы"],
+  ["пр_дание сил","И"],
+  ["без_нъекционный","Ы"],
+  ["г_ревой дым","А"],
+  ["вз_мать","И"],
+  ["нащ_пать лучину","Е"],
+  ["ар_ергард","Ь"],
+  ["ч_стоплотный","И"],
+  ["старинное пр_дание","Е"],
+  ["пр_клонить голову","Е"],
+  ["соч_тание красок","Е"],
+  ["пр_кословить","Е"],
+  ["пр_российский","О"],
+  ["в_явь","Ъ"],
+  ["р_зыграть","А"]
+];
+
+const DISHES = [
+  ["🍔","Бургер",8,1],["🍕","Пицца",20,1],["🌭","Хот-дог",350,1],["🍟","Картошка фри",45,0],["🌮","Тако",30,0],
+  ["🌯","Буррито",60,0],["🥗","Салат",110,0],["🍣","Суши",0,0],["🍩","Пончик",320,0],["🍰","Торт",340,0],
+  ["🧁","Капкейк",290,0],["🍪","Печенье",35,0],["🥐","Круассан",40,1],["🥞","Блинчики",25,1],["🧇","Вафли",42,1],
+  ["🥧","Пирог",28,1],["🍨","Пломбир",260,0],["🍫","Шоколад",20,0],["🍿","Попкорн",50,0],["🥤","Газировка",190,0],
+  ["☕","Капучино",28,1],["🍜","Рамен",15,1],["🍝","Паста",10,1],["🥟","Пельмени",38,1],["🍤","Креветки",18,0],
+  ["🍗","Курочка",30,1],["🥨","Крендель",32,0],["🍓","Клубника",350,0],["🍉","Арбуз",130,0],["🥪","Сэндвич",48,0]
+];
+
+const $ = id => document.getElementById(id);
+let state, current = null;
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a}
+
+function newGame(){
+  const words = shuffle(WORDS.map((w,idx)=>({text:w[0],ans:w[1],idx})));
+  state = {
+    money:300, streak:0, best:0, correct:0,
+    items: DISHES.map((d,i)=>({emoji:d[0],name:d[1],hue:d[2],hot:d[3],word:words[i],status:null,given:null,dict:false})),
+    mistakes:[], tray:[]
+  };
+  renderGrid(); updateHud(); $('tray').innerHTML='<span class="tray-empty">пока пусто… выбери что-нибудь вкусное!</span>';
+  $('final').classList.remove('show');
+}
+
+function renderGrid(){
+  const g=$('grid'); g.innerHTML='';
+  state.items.forEach((it,i)=>{
+    const c=document.createElement('div');
+    c.className='card'+(it.status?' done':'');
+    c.style.setProperty('--h',it.hue); c.style.setProperty('--i',i);
+    c.innerHTML=`${it.hot?'<i class="steam"></i><i class="steam"></i><i class="steam"></i>':''}
+      <div class="emoji">${it.emoji}</div><div class="name">${it.name}</div><div class="tag">блюдо №${i+1}</div>
+      ${it.status?`<div class="stamp ${it.status}"><span>${it.status==='ok'?'ТВОЁ ✓':'−10 $'}</span></div>`:''}`;
+    c.onclick=()=>{ if(!it.status) openDish(i,c); };
+    it.el=c; g.appendChild(c);
+  });
+}
+
+function updateHud(){
+  $('money').textContent=state.money;
+  $('streak').textContent=state.streak;
+  $('fireChip').classList.toggle('hot',state.streak>=3);
+  $('dictCount').textContent=state.mistakes.filter(m=>m.dict).length;
+  const done=state.items.filter(i=>i.status).length;
+  $('bar').style.width=(done/state.items.length*100)+'%';
+}
+
+function wordHTML(text, mode, given, ans){
+  const [a,b]=text.split('_');
+  if(mode==='ask') return `${a}<span class="slot">?</span>${b}`;
+  const l=ans.toLowerCase();
+  if(mode==='ok') return `${a}<span class="good">${l}</span>${b}`;
+  return `${a}<span class="good">${l}</span>${b}<br><small style="font-size:.55em;opacity:.8">ты написал(а): ${a}<span class="wrong">${(given||'').toLowerCase()}</span>${b}</small>`;
+}
+
+function openDish(i,card){
+  const it=state.items[i]; current={i,it,card,answered:false};
+  $('mEmoji').textContent=it.emoji; $('mTitle').textContent=it.name;
+  $('mWord').innerHTML=wordHTML(it.word.text,'ask');
+  $('result').textContent=''; $('result').className='result'; $('actions').innerHTML='';
+  $('inputZone').style.display=''; $('letter').value='';
+  $('modal').classList.remove('shake');
+  $('overlay').classList.add('show');
+  setTimeout(()=>$('letter').focus(),80);
+}
+
+function closeModal(){
+  if(current && !current.answered){ $('overlay').classList.remove('show'); current=null; return; }
+  $('overlay').classList.remove('show'); current=null; checkEnd();
+}
+
+function check(){
+  if(!current || current.answered) return;
+  let v=$('letter').value.trim().toUpperCase();
+  if(!/^[А-ЯЁ]$/.test(v)){ $('modal').classList.remove('shake'); void $('modal').offsetWidth; $('modal').classList.add('shake'); $('letter').focus(); return; }
+  const {it,card}=current; current.answered=true; it.given=v;
+  $('inputZone').style.display='none';
+  if(v===it.word.ans){
+    it.status='ok'; state.correct++; state.streak++; state.best=Math.max(state.best,state.streak);
+    $('mWord').innerHTML=wordHTML(it.word.text,'ok',v,it.word.ans);
+    $('result').className='result ok';
+    $('result').textContent=['Верно! Приятного аппетита! 😋','Браво, шеф! 👨‍🍳','Идеально! Блюдо твоё! 🎉','Точно в цель! ⭐'][Math.floor(Math.random()*4)];
+    confetti(70); floatText('+ '+it.emoji,'#14a073');
+    if(state.streak>=3) embers();
+    if([3,5,10,15,20,25,30].includes(state.streak)) toast(`🔥 Серия ×${state.streak}!`);
+    $('actions').innerHTML='<button class="bigbtn green" id="nextBtn">Забрать блюдо 🍽</button>';
+    $('nextBtn').onclick=()=>{ flyToTray(it.emoji); closeModal(); };
+  } else {
+    it.status='bad'; state.money=Math.max(0,state.money-10); state.streak=0;
+    const m={emoji:it.emoji,text:it.word.text,ans:it.word.ans,given:v,dict:false}; state.mistakes.push(m); it.m=m;
+    $('mWord').innerHTML=wordHTML(it.word.text,'bad',v,it.word.ans);
+    $('modal').classList.remove('shake'); void $('modal').offsetWidth; $('modal').classList.add('shake');
+    $('result').className='result bad'; $('result').textContent=`Ой! Правильно: «${it.word.ans}». Минус 10 $ 💸`;
+    floatText('−10 $','#ff5a4e');
+    const mc=$('moneyChip'); mc.classList.remove('hit'); void mc.offsetWidth; mc.classList.add('hit');
+    $('actions').innerHTML='<button class="bigbtn blue" id="dictBtn">📒 Добавить в словарик</button><button class="bigbtn" id="nextBtn">Дальше →</button>';
+    $('dictBtn').onclick=e=>{ if(m.dict) return; m.dict=true; e.target.textContent='✓ В словарике'; e.target.classList.add('added'); floatText('📒 +1','#2f8ee0'); updateHud(); };
+    $('nextBtn').onclick=closeModal;
+  }
+  updateHud(); renderGrid();
+}
+
+function checkEnd(){ if(state.items.every(i=>i.status)) setTimeout(showFinal,500); }
+
+/* ===== Эффекты ===== */
+function confetti(n){
+  const colors=['#ff5a4e','#ffc23d','#3fd3a6','#ff4f9a','#5ab8ff','#b6e94b','#fff'];
+  for(let k=0;k<n;k++){
+    const p=document.createElement('div'); p.className='confetti';
+    p.style.left=Math.random()*100+'vw'; p.style.background=colors[k%colors.length];
+    if(Math.random()<.3) p.style.borderRadius='50%';
+    document.body.appendChild(p);
+    const dur=1800+Math.random()*1600, dx=(Math.random()-.5)*300;
+    p.animate([{transform:`translate(0,-20px) rotate(0)`,opacity:1},{transform:`translate(${dx}px,105vh) rotate(${720*Math.random()+360}deg)`,opacity:.9}],
+      {duration:dur,easing:'cubic-bezier(.2,.6,.4,1)',delay:Math.random()*300}).onfinish=()=>p.remove();
+  }
+}
+function floatText(t,color){
+  const r=$('modal').getBoundingClientRect();
+  const f=document.createElement('div'); f.className='float-text'; f.textContent=t; f.style.color=color;
+  f.style.left=(r.left+r.width/2)+'px'; f.style.top=(r.top+40)+'px';
+  document.body.appendChild(f); setTimeout(()=>f.remove(),1400);
+}
+function toast(t){ const d=document.createElement('div'); d.className='toast'; d.textContent=t; document.body.appendChild(d); setTimeout(()=>d.remove(),1900); }
+function embers(){
+  const r=$('fireChip').getBoundingClientRect();
+  for(let k=0;k<14;k++){
+    const e=document.createElement('div'); e.className='ember'; e.textContent=['🔥','✨','⭐'][k%3];
+    e.style.left=(r.left+r.width/2)+'px'; e.style.top=(r.top+r.height/2)+'px';
+    const a=Math.random()*Math.PI*2, d=60+Math.random()*90;
+    e.style.setProperty('--dx',Math.cos(a)*d+'px'); e.style.setProperty('--dy',Math.sin(a)*d+'px');
+    document.body.appendChild(e); setTimeout(()=>e.remove(),1300);
+  }
+}
+function flyToTray(emoji){
+  const from=$('mEmoji').getBoundingClientRect(), to=$('tray').getBoundingClientRect();
+  const f=document.createElement('div'); f.textContent=emoji;
+  Object.assign(f.style,{position:'fixed',left:from.left+'px',top:from.top+'px',fontSize:'90px',zIndex:150,pointerEvents:'none',filter:'drop-shadow(0 0 20px #ffc23d)'});
+  document.body.appendChild(f);
+  const tx=to.left+20+state.tray.length*36-from.left, ty=to.top-from.top-20;
+  f.animate([{transform:'translate(0,0) scale(1)'},{transform:`translate(${tx/2}px,${ty/2-150}px) scale(.8) rotate(180deg)`},{transform:`translate(${tx}px,${ty}px) scale(.35) rotate(360deg)`}],
+    {duration:800,easing:'ease-in-out'}).onfinish=()=>{
+      f.remove(); state.tray.push(emoji);
+      const t=$('tray'); if(t.querySelector('.tray-empty')) t.innerHTML='';
+      const s=document.createElement('span'); s.textContent=emoji; t.appendChild(s);
+    };
+}
+
+/* ===== Финал ===== */
+function showFinal(){
+  $('overlay').classList.remove('show');
+  const answered=state.items.filter(i=>i.status).length;
+  const errs=state.mistakes.length;
+  const acc=answered?Math.round(state.correct/answered*100):0;
+  let rank= acc===100&&answered===30?'🏆 Шеф-повар орфографии! Безупречно!':acc>=85?'🥇 Су-шеф! Почти без ошибок!':acc>=65?'🥈 Повар с опытом — так держать!':acc>=40?'🥉 Стажёр на кухне — тренируйся!':'🍳 Поварёнок — словарик тебе в помощь!';
+  const earned=state.items.filter(i=>i.status==='ok').map(i=>i.emoji).join(' ');
+  const list=state.mistakes.map((m,i)=>{const[a,b]=m.text.split('_');
+    return `<div class="mist" style="--i:${i}"><span class="e">${m.emoji}</span><div><div class="w">${a}<b>${m.ans.toLowerCase()}</b>${b}</div><div class="y">твой ответ: «${m.given}» · правильно: «${m.ans}»</div></div>${m.dict?'<span class="star" title="В словарике">📒</span>':''}</div>`}).join('');
+  $('receipt').innerHTML=`
+    <h1>🧾 Твой счёт в кафе «Грамотей»</h1>
+    <div class="rank">${rank}</div>
+    <div class="stats">
+      <div class="stat" style="background:#fff3c4"><div>💰 ${state.money}$</div><small>осталось из 300$</small></div>
+      <div class="stat" style="background:#c9f6e5"><div>✅ ${state.correct}</div><small>верных ответов</small></div>
+      <div class="stat" style="background:#ffe0dc"><div>❌ ${errs}</div><small>ошибок (−${errs*10}$)</small></div>
+      <div class="stat" style="background:#ffe2c4"><div>🔥 ${state.best}</div><small>лучшая серия</small></div>
+      <div class="stat" style="background:#dff1ff"><div>🎯 ${acc}%</div><small>точность · ${answered}/30 блюд</small></div>
+    </div>
+    ${earned?`<h2>🍽 Ты заработал(а):</h2><div class="earned">${earned}</div>`:''}
+    <h2>📒 Все ошибки (${errs})</h2>
+    ${errs?`<div class="reminder">📸 Сделай скриншот и обязательно перепиши слова в свой словарик! ✍️</div><div class="mistakes">${list}</div>`
+          :`<div class="perfect">🎉 Ни одной ошибки! Ты настоящий мастер грамотности! 🎉</div>`}
+    <div class="actions" style="margin-top:24px"><button class="bigbtn green" id="againBtn">🔄 Играть снова</button>${answered<30?'<button class="bigbtn blue" id="backBtn">← Вернуться к витрине</button>':''}</div>`;
+  $('final').classList.add('show'); $('final').scrollTop=0;
+  confetti(errs?60:160); if(!errs) toast('🏆 Идеально!');
+  $('againBtn').onclick=newGame;
+  if($('backBtn')) $('backBtn').onclick=()=>$('final').classList.remove('show');
+}
+
+/* ===== События ===== */
+$('checkBtn').onclick=check;
+$('letter').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); e.stopPropagation(); check(); } });
+$('letter').addEventListener('input',e=>{ e.target.value=e.target.value.slice(-1).toUpperCase(); });
+document.querySelectorAll('.keys button').forEach(b=>b.onclick=()=>{ $('letter').value=b.dataset.k; $('letter').focus(); });
+$('closeBtn').onclick=closeModal;
+$('overlay').addEventListener('click',e=>{ if(e.target.id==='overlay') closeModal(); });
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape' && $('overlay').classList.contains('show')) closeModal();
+  if(e.key==='Enter' && current && current.answered && $('nextBtn')) $('nextBtn').click();
+});
+$('finishBtn').onclick=()=>{
+  const left=state.items.filter(i=>!i.status).length;
+  if(left && !confirm(`Осталось ещё ${left} блюд. Точно попросить счёт?`)) return;
+  showFinal();
+};
+
+newGame();
+</script>
+</body>
+</html>
